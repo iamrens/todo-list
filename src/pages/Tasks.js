@@ -129,13 +129,13 @@ const Tasks = () => {
             
             <Box>
                 <TextField
-                    onChange={e => setSearchTask(e.target.value)} label='Search task...' placeholder='Search task...' variant='outlined' value={searchTask}
+                    onChange={e => setSearchTask(e.target.value)} label='Search task...' variant='outlined' value={searchTask}
                     sx={field}
                 />
                 <form onSubmit={addTask}>
                     <Box sx={{display: 'flex'}}>
                         <TextField
-                            onChange={e => setNewTask(e.target.value)} placeholder='Add tasks...' variant='outlined' value={newTask}
+                            onChange={e => setNewTask(e.target.value)} label='Add task...' variant='outlined' value={newTask}
                             sx={field}
                         />
                         <Button sx={{width: '20%', height: '10%', fontSize: '100%', m: 1, '&:hover': { backgroundColor: '#424242', color: '#fefefe' }}} onClick={addTask} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
