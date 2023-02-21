@@ -1,23 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import RootLayout from "./layouts/RootLayout";
+import About from "./pages/About";
+import Tasks from "./pages/Tasks";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Tasks />}/>
+      <Route path="about" element={<About />} />
+    </Route>
+  )
+);
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fefefe'
+    }
+  },
+  typography: {
+    fontFamily: 'Poppins',
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  }
+});
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeProvider theme={theme}>
+        <Tasks />
+      </ThemeProvider>
+
+      {/* <RouterProvider router={router} /> */}
+      {/* <Router>
+            <Routes>
+              <Route exact path="/" element={<Home />}></Route>
+              <Route path="/about" element={<About />}></Route>
+            </Routes>
+        </Router> */}
     </div>
   );
 }

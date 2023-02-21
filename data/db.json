@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "Buy milks",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "text": "Do laundry",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "Walk the dog",
+      "completed": false
+    },
+    {
+      "text": "Wash the dishes",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "text": "wash the plate",
+      "completed": false,
+      "id": 5
+    }
+  ]
+}
