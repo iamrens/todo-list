@@ -1,5 +1,33 @@
 import { useState, useEffect } from "react";
 import Axios from 'axios';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
+//styles for textfields
+const field = {
+    background: 'rgba(0,0,0,0.2)',
+    mx: 'auto',
+    mb: 2,
+    width: '100%',
+    diplay: 'flex',
+    "& .MuiInputBase-root": {color: '#fefefe'},
+    "& .MuiInputLabel-root": {color: '#fefefe'},
+    "& .MuiOutlinedInput-root": {
+        "& > fieldset": { border: "none" },
+    },
+    "& .MuiOutlinedInput-root:hover": {
+        "& > fieldset": { borderLeft: "4px solid #e0e0e0" },
+    },
+    "& .MuiOutlinedInput-root.Mui-focused": {
+        "& > fieldset": {
+            border: "2px solid #fefefe"
+        }
+    },
+};
 
 const Tasks = () => {
 
@@ -93,21 +121,29 @@ const Tasks = () => {
     };
 
     return (
-        <div>
-            <h1>
+        <Container maxWidth="sm">
+
+            <Typography variant="h3" align="center" color='primary' sx={{mt: 2, mb: 2, mx: 'auto'}}>
                 Todo List
-            </h1>
+            </Typography>
             
-            <div>
-
-                <input onChange={e => setSearchTask(e.target.value)} placeholder='Search task...' value={searchTask}/>
-
+            <Box>
+                <TextField
+                    onChange={e => setSearchTask(e.target.value)} label='Search task...' placeholder='Search task...' variant='outlined' value={searchTask}
+                    sx={field}
+                />
                 <form onSubmit={addTask}>
-                    <input value={newTask} type="text" placeholder="Tasks..." onChange={e => setNewTask(e.target.value)}/>
-                    <button type="submit" onClick={addTask}>Add Task</button>
-
+                    <Box sx={{display: 'flex'}}>
+                        <TextField
+                            onChange={e => setNewTask(e.target.value)} placeholder='Add tasks...' variant='outlined' value={newTask}
+                            sx={field}
+                        />
+                        <Button sx={{width: '20%', height: '10%', fontSize: '100%', m: 1, '&:hover': { backgroundColor: '#424242', color: '#fefefe' }}} onClick={addTask} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
+                            Add
+                        </Button>
+                    </Box>
                 </form>
-            </div>
+            </Box>
             
             <div>
                 <button onClick={() => setSelectedTab('all')}>All</button>
@@ -140,7 +176,7 @@ const Tasks = () => {
                 ))}
             </div>
 
-        </div>     
+        </Container>     
     );
 }
  
