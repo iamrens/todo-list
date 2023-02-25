@@ -20,6 +20,16 @@ const theme = createTheme({
       main: '#fefefe'
     }
   },
+  breakpoints: {
+    values: {
+      xxs: 0,
+      xs: 400,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   typography: {
     fontFamily: 'Poppins',
     fontWeightLight: 400,

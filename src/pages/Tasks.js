@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import Axios from 'axios';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Typography, Container, Box, Button, List, ListItem, ListItemText, IconButton, TextField, Tooltip  } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 //styles for textfields
 const field = {
@@ -13,11 +14,9 @@ const field = {
     mx: 'auto',
     mb: 2,
     width: '100%',
-    diplay: 'flex',
     "& .MuiInputBase-root": {color: '#fefefe'},
-    "& .MuiInputLabel-root": {color: '#fefefe'},
     "& .MuiOutlinedInput-root": {
-        "& > fieldset": { border: "none" },
+        "& > fieldset": { border: "none"},
     },
     "& .MuiOutlinedInput-root:hover": {
         "& > fieldset": { borderLeft: "4px solid #e0e0e0" },
@@ -28,6 +27,19 @@ const field = {
         }
     },
 };
+
+// style for complete, edit, save, cancel and delete buttons
+const btn = {
+    '&:hover': {
+        bgcolor: '#b0bec5',
+        color: '#212121'
+    },
+    color: '#e0e0e0',
+    maxHeight: '44px',
+    my: 'auto',
+    p: 0.5,
+};
+
 
 const Tasks = () => {
 
@@ -123,59 +135,149 @@ const Tasks = () => {
     return (
         <Container maxWidth="sm">
 
-            <Typography variant="h3" align="center" color='primary' sx={{mt: 2, mb: 2, mx: 'auto'}}>
+            <Typography align="center" color='primary' sx={{my: 2, mx: 'auto', fontSize: {xxs: '24px', xs: '30px', sm: '36px'}}}>
                 Todo List
             </Typography>
             
             <Box>
                 <TextField
-                    onChange={e => setSearchTask(e.target.value)} label='Search task...' variant='outlined' value={searchTask}
+                    onChange={e => setSearchTask(e.target.value)}
+                    placeholder='Search task...'
+                    value={searchTask}
+                    multiline
+                    maxRows={2}
+                    size='small'
+                    variant='outlined' 
                     sx={field}
                 />
-                <form onSubmit={addTask}>
                     <Box sx={{display: 'flex'}}>
                         <TextField
-                            onChange={e => setNewTask(e.target.value)} label='Add task...' variant='outlined' value={newTask}
+                            onChange={e => setNewTask(e.target.value)}
+                            placeholder='Add tasks...'
+                            value={newTask}
+                            multiline
+                            maxRows={2}
+                            size='small'
+                            variant='outlined'
                             sx={field}
                         />
-                        <Button sx={{width: '20%', height: '10%', fontSize: '100%', m: 1, '&:hover': { backgroundColor: '#424242', color: '#fefefe' }}} onClick={addTask} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
+                        <Button 
+                            sx={{
+                                width: '20%', height: {xxs: '30px', xs:'10%'}, fontSize: '100%', ml: 1, my: {xxs: 0.5, xs: 0} , '&:hover': { backgroundColor: '#424242', color: '#fefefe',
+                            }}} 
+                            onClick={addTask} 
+                            variant="contained" 
+                            endIcon={<AddCircleOutlineIcon/>}>
                             Add
                         </Button>
                     </Box>
-                </form>
             </Box>
+                        
+            <Box sx={{
+                display: 'flex', 
+                flexDirection: {xxs: 'column', sm: 'row'}, 
+                gap: {xxs: 1, sm: 5}, 
+                mb: 1,
+                mx: 'auto', 
+                justifyContent: 'center',
+                bgcolor: '#cfd8dc', 
+                p: 1, 
+                borderRadius: 2,
+                width: {xxs: '75%', xs: '70%', sm: '95%'},
+                }}>
+                <Button
+                    sx={{
+                        '&:hover': { bgcolor: '#424242', color: '#fefefe' },
+                        bgcolor: selectedTab === 'all' ? '#212121': '#b0bec5',
+                        color: selectedTab === 'all' ? '#fefefe' : '#212121',
+                        width: '100%',
+                        fontSize: {xxs: '80%', xs: '90%', sm: '100%'}
+                    }} 
+                    onClick={() => setSelectedTab('all')}>All</Button>
+                <Button
+                    sx={{
+                        '&:hover': { backgroundColor: '#424242', color: '#fefefe' },
+                        bgcolor: selectedTab === 'ongoing' ? '#212121': '#b0bec5',
+                        color: selectedTab === 'ongoing' ? '#fefefe' : '#212121',
+                        width: '100%',
+                        fontSize: {xxs: '80%', xs: '90%', sm: '100%'}
+                    }}
+                    onClick={() => setSelectedTab('ongoing')}>Ongoing</Button>
+                <Button
+                    sx={{
+                        '&:hover': { backgroundColor: '#424242', color: '#fefefe' },
+                        bgcolor: selectedTab === 'completed' ? '#212121': '#b0bec5',
+                        color: selectedTab === 'completed' ? '#fefefe' : '#212121',
+                        width: '100%',
+                        fontSize: {xxs: '80%', xs: '90%', sm: '100%'}
+                    }}
+                    onClick={() => setSelectedTab('completed')}>Completed</Button>
+            </Box>    
             
-            <div>
-                <button onClick={() => setSelectedTab('all')}>All</button>
-                <button onClick={() => setSelectedTab('completed')}>Completed</button>
-                <button onClick={() => setSelectedTab('ongoing')}>Ongoing</button>
-            </div>
-            <div>
-                {filteredTask.map(task => (
-                <div key={task.id}>
-                    {editingTask && editingTask.id === task.id ? (
-                        <form onSubmit={editTask}>
-                            <input value={editingTask.text} type="text" onChange={handleEditChange}/>
-                            <button type="submit">Save</button>
-                            <button type="button" onClick={cancelEditTask}>Cancel</button>
-                        </form>
-                    ) : (
-                        <div>
-                            <span
-                                style={{textDecoration: task.completed ? 'line-through' : ''}}
-                            >
-                                {task.text}
-                            </span>
-                            <button onClick={() => completeTask(task)}>Completed?</button>
-                            <button onClick={() => startEditTask(task)}>Edit</button>
-                            <button onClick={() => deleteTask(task.id)}>Delete</button>
-                        </div>
-                    )}
-
-                </div>
-                ))}
-            </div>
-
+            <List>
+            {filteredTask.length === 0 ? (
+                <Typography variant="body1" align="center" color='primary' sx={{my: 2, mx: 'auto', }}>
+                    - No task found -
+                </Typography>
+            ) : (
+                filteredTask.map(task => (
+                    <ListItem key={task.id}>
+                        {editingTask && editingTask.id === task.id ? (
+                            <Box sx={{
+                                display: 'flex', 
+                                }}>
+                                <TextField 
+                                    value={editingTask.text} 
+                                    onChange={handleEditChange} 
+                                    size='small' 
+                                    multiline 
+                                    maxRows={2}
+                                    sx={{
+                                        width: '400px', 
+                                        bgcolor: '#b0bec5',
+                                        borderRadius: 2,
+                                        "& .MuiInputBase-root": {color: '#212121'},
+                                        "& .MuiOutlinedInput-root": {
+                                            "& > fieldset": { border: "none" },
+                                        },
+                                    }}
+                                />
+                                    <IconButton onClick={editTask} sx={btn}>
+                                        <SaveIcon />
+                                    </IconButton>
+                                    <IconButton onClick={cancelEditTask} sx={btn}>
+                                        <CancelIcon />
+                                    </IconButton>
+                            </Box>
+                        ) : (
+                            <Box sx={{display: 'flex',  width: '100%'}}>
+                                <ListItemText
+                                    primary={ <Typography> {task.text} </Typography> }
+                                    sx={{
+                                        textDecoration: task.completed ? 'line-through' : 'none',
+                                        color: '#fefefe', 
+                                        bgcolor: 'rgba(0,0,0,0.2)', 
+                                        p: 1, m: 0, gap: 0, borderRadius: 2, maxHeight: '44px', 
+                                        overflow: 'auto'}}
+                                />
+                                <Box sx={{display: 'flex'}}>
+                                    <Tooltip title="Complete the task?" placement="left-start">
+                                        <IconButton onClick={() => completeTask(task)} sx={btn}>
+                                            <CheckCircleIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <IconButton onClick={() => startEditTask(task)} sx={btn}>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton onClick={() => deleteTask(task.id)} sx={btn}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Box>    
+                            </Box>
+                        )}
+                    </ListItem>
+                )))}
+                </List>
         </Container>     
     );
 }

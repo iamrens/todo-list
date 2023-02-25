@@ -1,16 +1,6 @@
 {
   "todos": [
     {
-      "id": 1,
-      "text": "Buy milks",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "text": "Do laundry",
-      "completed": false
-    },
-    {
       "id": 3,
       "text": "Walk the dog",
       "completed": false
@@ -18,12 +8,22 @@
     {
       "text": "Wash the dishes",
       "completed": false,
-      "id": 4
+      "id": 6
     },
     {
-      "text": "wash the plate",
+      "text": "Marry your daughter",
       "completed": false,
-      "id": 5
+      "id": 7
+    },
+    {
+      "text": "Killing me softly",
+      "completed": false,
+      "id": 10
+    },
+    {
+      "text": "how are you today. hope you are fine now yes hahahahhow are you today. hope you are fine now yes hahahah",
+      "completed": false,
+      "id": 11
     }
   ]
 }
